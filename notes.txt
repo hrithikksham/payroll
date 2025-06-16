@@ -1,0 +1,94 @@
+// Anjo payroll systen
+
+client - React app
+Server - node.js + Express
+Database - Mongodb atlas
+
+Front end setup
+
+1. Login Page
+	•	Simple form with validation
+	•	API integration to /auth/login
+	•	Store JWT token in localStorage
+
+2. Sidebar & Routing
+	•	Use react-router-dom for page routing
+	•	Persistent sidebar with active state highlight
+
+3. Dashboard
+	•	Fetch monthly payroll data (bar chart)
+	•	Display total spending and net average
+
+4. Employees Page
+	•	Form to add employee
+	•	List view to show employee data
+	•	POST & GET APIs integrated
+
+5. Salary Calculation Page
+	•	Dropdowns for employee and month
+	•	Inputs for earnings/deductions
+	•	Calculate gross, deductions, and net pay
+	•	Save calculation to DB via POST
+
+6. Reports Page
+	•	Filter by month
+	•	Show employee salary data
+	•	Button to download payslip (PDF)
+
+Backend setup
+
+1. User Auth (Admin only)
+	•	/auth/login → validate credentials → return JWT
+	•	Middleware: authMiddleware.js to verify JWT
+
+2. Employee Routes
+	•	POST /employees → Add new
+	•	GET /employees → List all
+
+3. Salary Routes
+	•	POST /salary/calculate → Save earnings, deductions, total
+	•	GET /salary/:month → Return salaries for report
+
+4. Reports/PDF
+	•	Use html-pdf, pdfkit, or puppeteer to generate payslip
+	•	Provide Download link for payslip
+
+Database - using mongodb atlas
+ 
+url -mongodb+srv://hrithikksham:hrithik1234@salaryanjo.vp4i5m6.mongodb.net/?retryWrites=true&w=majority&appName=salaryanjo
+
+port running on 4848
+
+token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTAzMWIwNDc0MTZlOTk4OGRkZTU4YiIsImlhdCI6MTc1MDA4NjA4NiwiZXhwIjoxNzUwMTcyNDg2fQ.XJILlb_AxaZXUo-154QztPKT8ryQLtcgs-xuRW_I3vg
+{ 
+    email - hrithiksham@gmail.com
+    password - 123456
+}
+
+employee created 
+
+{
+    "empId": "EMP1",
+    "name": "Hrithik Sham",
+    "phone": "9506677722",
+    "designation": "Software Engineer",
+    "baseSalary": 100000,
+    "_id": "685035de793e5814d1ff77a8",
+    "createdAt": "2025-06-16T15:18:54.007Z",
+    "updatedAt": "2025-06-16T15:18:54.007Z",
+    "__v": 0
+}
+
+{
+    "empId": "EMP2",
+    "name": "Dhiliban",
+    "phone": "8144227722",
+    "designation": "Admin",
+    "baseSalary": 1000000,
+    "_id": "68503643793e5814d1ff77aa",
+    "createdAt": "2025-06-16T15:20:35.019Z",
+    "updatedAt": "2025-06-16T15:20:35.019Z",
+    "__v": 0
+}
+
+____________________________________________________
