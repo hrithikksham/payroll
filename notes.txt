@@ -92,3 +92,59 @@ employee created
 }
 
 ____________________________________________________
+
+frontend
+
+App.tsx
+	•	The core React component.
+	•	Handles Routes, layout, and high-level UI.
+
+ main.tsx
+	•	The entry point.
+	•	Mounts the <App /> component inside #root using ReactDOM.
+
+index.css 
+	. entry level css for tailwind
+
+pages/
+	•	Each file = one screen/page in your app.
+	•	Example: Login.tsx, Dashboard.tsx, Reports.tsx, etc.
+
+⸻
+
+📁 components/
+	•	Reusable UI components.
+	•	Example: Sidebar.tsx, Header.tsx, Card.tsx, Button.tsx.
+
+⸻
+
+📁 services/
+	•	Logic for making API calls using axios.
+	•	Example: authService.ts, employeeService.ts.
+
+⸻
+
+📁 context/
+	•	Stores global state.
+	•	Example: AuthContext.tsx can share login state across components.
+
+⸻
+
+📁 hooks/
+	•	Your own custom React hooks.
+	•	Example: useAuth(), useFetch(), useSalaryCalculator().
+
+package.json
+Lists project dependencies, scripts (npm run dev)
+
+vite.config.ts
+Vite-specific config (e.g. path aliasing, plugins)
+
+tsconfig.json
+Tells TypeScript how to compile and type-check your code
+
+tailwind.config.js
+Tailwind settings — colors, fonts, where to look for class names
+
+postcss.config.js
+Used by Tailwind to process your CSS pipeline

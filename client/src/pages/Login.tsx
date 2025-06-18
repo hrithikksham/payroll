@@ -1,105 +1,48 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // For redirection after login
-import api from './api'; // Import our configured Axios instance
+import { useState } from 'react';
+import API from '../services/Api';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import logo from '../assets/anjo.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form from reloading the page
-    setError(''); // Reset any previous errors
-
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await api.post('/auth/login', {
-        email: email,
-        password: password,
-      });
-
-      // ---- Backend Response Handling ----
-      // Assuming the backend responds with a token like { token: "your_jwt_token" }
-      const token = response.data.token;
-
-      if (token) {
-        // 1. Store the token in localStorage
-        localStorage.setItem('token', token);
-
-        // 2. Redirect to the dashboard
-        // The Axios interceptor will now automatically add the token to all future requests
-        navigate('/dashboard');
-      } else {
-        setError('Login failed: No token received.');
-      }
-    } catch (err) {
-      // Handle login errors (e.g., wrong credentials, server error)
-      const errorMessage = err.response?.data?.message || 'Invalid credentials or server error.';
-      setError(errorMessage);
-      console.error('Login Error:', err);
+      const res = await API.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      navigate('/dashboard');
+    } catch (err: any) {
+      toast.error(err.response?.data?.msg || 'Login failed.');
     }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.loginBox}>
-        <h2 style={styles.title}>anjo</h2> {/* Matches your wireframe */}
-        <form onSubmit={handleLogin}>
-          <div style={styles.inputGroup}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              required
-              style={styles.input}
-            />
-          </div>
-          <div style={styles.inputGroup}>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-              style={styles.input}
-            />
-          </div>
-          {error && <p style={styles.errorText}>{error}</p>}
-          <button type="submit" style={styles.button}>
-            Sign In
-          </button>
-        </form>
-      </div>
+    <div className="auth-card">
+      <img className='logo' src={logo} alt="Your Logo" />
+      <h3>Login into your account</h3>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email ID"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">LOGIN</button>
+      </form>
     </div>
   );
 };
 
-// Basic styling to match the wireframe's aesthetic
-const styles = {
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#333'
-    },
-    loginBox: {
-        padding: '40px',
-        backgroundColor: 'white',
-        borderRadius: '8px',
-        textAlign: 'center',
-        width: '300px'
-    },
-    title: {
-        marginBottom: '30px',
-        fontSize: '24px',
-        fontWeight: 'bold'
-    },
-    inputGroup: {
-        marginBottom: '20px'
-    },
-    input: {
-        width: '100%',
-        padding: '10px',
-        border: '1px solid
+export default Login;

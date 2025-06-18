@@ -1,3 +1,116 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* --- Global Styles & Background --- */
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #ffffff; /* A rich, light grey background */
+  overflow: hidden; /* Hide scrollbars */
+}
+
+/* --- The Glass Card --- */
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.65); /* Key for the glassy effect */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 10, 139, 0.15);
+  backdrop-filter: blur(100px); /* The blur effect */
+  -webkit-backdrop-filter: blur(12px); /* For Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  color: #333;
+  animation: subtleGlow 10s infinite alternate; /* The subtle breathing glow */
+  display: block;
+  align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  position: relative; /* For positioning the glow effect */
+}
+
+/* --- Subtle Glow Animation for the Card --- */
+@keyframes subtleGlow {
+  0% {
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15), 0 0 5px rgba(173, 216, 230, 0);
+  }
+  100% {
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2), 0 0 20px rgba(0, 175, 234, 0.7);
+  }
+}
+
+/* --- Logo & Heading --- */
+.auth-card img {
+  width: 50px;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+.auth-card h3 {
+  margin-bottom: 50px;
+  font-size: 30px;
+  font-weight: 100;
+  letter-spacing: 2px;
+  color: #000000; /* A deep, rich grey */
+}
+
+/* --- Form Elements --- */
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between form elements */
+}
+
+.auth-card input {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(204, 204, 204, 0.5);
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 16px;
+  color: #333;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  outline: none; /* Remove default outline */
+}
+
+.auth-card input::placeholder {
+  color: #00000071;
+}
+
+/* --- Glowing Animation on Input Focus --- */
+.auth-card input:focus {
+  border-color: rgba(135, 206, 250, 0.8); /* Light blue border */
+  box-shadow: 0 0 15px 5px rgba(173, 216, 230, 0.7); /* The glowing effect */
+}
+.logo {
+  width: 1000px; /* Adjusted for better visibility */
+  height: auto;
+  margin-bottom: 5px;
+}
+.auth-link {
+  color: #3498db; /* A pleasant blue */
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: color 0.3s ease;
+}
+/* --- Register Button --- */
+.auth-card button {
+  background: #000000; /* A pleasant blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Glowing Animation on Button Hover --- */
+.auth-card button:hover {
+  background-color: #2980b9;
+  box-shadow: 0 0 20px 5px rgba(173, 216, 230, 0.8); /* The glowing effect */
+}
+
