@@ -12,7 +12,7 @@ const {
 router.post('/', auth, addEmployee);
 
 // Read
-router.get('/', auth, getAllEmployees);
+router.get('/', auth , getAllEmployees);
 
 // Update
 router.put('/:id', auth, updateEmployee);

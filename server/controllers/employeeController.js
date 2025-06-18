@@ -15,7 +15,7 @@ exports.addEmployee = async (req, res) => {
 // Get all employees
 exports.getAllEmployees = async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const employees = await Employee.find({}, 'name empId baseSalary');
     res.json(employees);
   } catch (err) {
     console.error(err.message);

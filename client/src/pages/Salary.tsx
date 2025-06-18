@@ -2,6 +2,7 @@ import  { useState, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
 import toast from 'react-hot-toast';
 import './Salary.css';
+import API from '../services/Api';
 
 
 const generateMonthYears = () => {
@@ -54,12 +55,14 @@ const Salary = () => {
   // --- Effects ---
 
   // Fetch employees on component mount
-  useEffect(() => {
-    fetch('/api/employees')
-      .then(res => res.json())
-      .then(data => setEmployees(data))
-      .catch(() => toast.error("Failed to load employees"));
-  }, []);
+
+useEffect(() => {
+  API.get('/employees')
+    .then(res => setEmployees(res.data))
+    .catch(err => {
+      console.error('Failed to fetch employees:', err);
+    });
+}, []);
 
  useEffect(() => {
   if (!selectedEmployeeId) return;
@@ -121,7 +124,7 @@ const Salary = () => {
 
     // This object matches your Mongoose schema
     const salaryData = {
-        employeeId: selectedEmployeeId,
+        empId: selectedEmployeeId,
         month: selectedMonth,
         earnings: Object.entries(earnings).reduce((acc, [key, value]) => {
             acc[key] = parseFloat(value) || 0;
@@ -151,11 +154,12 @@ const Salary = () => {
             <div className="form-group">
                 <label>Employee</label>
                 <select value={selectedEmployeeId} onChange={(e) => setSelectedEmployeeId(e.target.value)}>
+                    <option value="" disabled>Select employee</option>
                     {employees.map(emp => (
-                        <option key={emp._id} value={emp._id}>
-                        {emp.name} (ID: ...{emp._id.slice(-4)})
+                        <option key={emp._id} value={emp._id}> 
+                         {emp.name} 
                         </option>
-            ))}
+                    ))}
                     
                 </select>
             </div>

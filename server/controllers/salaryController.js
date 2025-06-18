@@ -1,3 +1,4 @@
+const { roundedRect } = require('pdfkit');
 const Salary = require('../models/Salary');
 const generatePayslipStream = require('../utils/generatePayslip');
 
@@ -17,7 +18,7 @@ exports.calculateSalary = async (req, res) => {
     const net = gross - totalDeductions;
 
     const salary = new Salary({
-      employeeId,
+      empId,
       month,
       earnings,
       deductions,
@@ -80,3 +81,7 @@ exports.downloadPayslip = async (req, res) => {
     res.status(500).json({ msg: 'Error generating payslip' });
   }
 };
+
+
+
+
