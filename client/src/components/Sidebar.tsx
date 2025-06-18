@@ -2,16 +2,17 @@ import { NavLink } from 'react-router-dom';
 import { FaHome, FaUsers, FaWaveSquare, FaFileAlt } from 'react-icons/fa';
 import logo from '../assets/anjo.png'; // Make sure this path is correct
 import './Sidebar.css';
-
-function handleLogout() {
-    // Your logout logic here
-    // For example:
-    // localStorage.removeItem('token');
-    // window.location.href = '/login';
-    console.log('Logout clicked');
-}
+import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+        console.log('Logout clicked');
+    };
+
     return (
         <aside className="sidebar">
             <div className="sidebar-top">

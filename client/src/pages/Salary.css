@@ -1,0 +1,177 @@
+/* General Styling */
+.salary-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #555; /* Dark grey background */
+    padding: 0px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.salary-card {
+    background-color: #ffffff;
+    border-radius: 0px;
+    padding: 30px 40px;
+    flex-direction: column;
+    width: 95%;
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    color: #333;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+/* Form Layout */
+.form-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.top-row {
+    align-items: flex-end;
+}
+
+.content-row {
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+.column-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+/* Form Elements */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  appearance: textfield;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Buttons */
+.btn-add {
+    align-self: flex-start;
+    padding: 6px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    margin-top: 5px;
+}
+
+.btn-add:hover {
+    background-color: #e0e0e0;
+}
+
+.footer-row {
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.btn-save {
+    padding: 12px 35px;
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-save:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Totals Section */
+.totals-section {
+    margin-top: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-end; /* Align text to the right */
+}
+
+.total-field {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px; /* Adjust as needed */
+    font-size: 16px;
+}
+
+.total-field span {
+    color: #555;
+}
+
+.total-field strong {
+    color: #222;
+    min-width: 80px; /* Ensures alignment */
+    text-align: right;
+}
+
+.net-pay {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.net-pay strong {
+    color: #000;
+}

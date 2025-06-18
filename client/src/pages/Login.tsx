@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <div className="auth-card">
-      <img className='logo' src={logo} alt="Your Logo" />
+      <img src={logo} alt="Your Logo" style={{ width: '150px', marginBottom: '1rem',animation: 'fadeIn 3s ease-in-out' }} />
       <h3>Login into your account</h3>
       <form onSubmit={handleLogin}>
         <input

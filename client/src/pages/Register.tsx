@@ -22,7 +22,7 @@ const Register = () => {
 
   return (
   <div className="auth-card">
-   <img src={logo} alt="Your Logo" style={{ width: '100px', marginBottom: '1rem' }} />
+   <img src={logo} alt="Your Logo" style={{ width: '150px', marginBottom: '1rem' ,animation: 'fadeIn 3s ease-in-out'}} />
     <h3>Register your account</h3>
     <form onSubmit={handleRegister}>
       <input

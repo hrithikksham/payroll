@@ -2,8 +2,12 @@
 body {
   font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: left;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
   background: #ffffff; /* A rich, light grey background */
   overflow: hidden; /* Hide scrollbars */
@@ -14,6 +18,8 @@ body {
   width: 100%;
   max-width: 500px;
   padding: 40px;
+  align-self: center;
+  margin: 50px auto; /* Center the card with some margin */
   background: rgba(255, 255, 255, 0.65); /* Key for the glassy effect */
   border-radius: 20px;
   box-shadow: 0 8px 32px 0 rgba(0, 10, 139, 0.15);
@@ -44,6 +50,9 @@ body {
   width: 50px;
   height: auto;
   margin-bottom: 30px;
+  animation: fadeIn 3s ease-in-out ; /* Fade-in effect for the logo */
+  transition: transform 0.3s ease;
+
 }
 
 .auth-card h3 {
