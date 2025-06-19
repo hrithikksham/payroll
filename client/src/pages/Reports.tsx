@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import API from '../services/Api';
 import toast from 'react-hot-toast';
 import './Reports.css';
+import { useNavigate } from 'react-router-dom';
 
 interface SalaryEntry {
   _id: string;
@@ -13,10 +14,12 @@ interface SalaryEntry {
   };
 }
 
+
 function Reports() {
   // Add state for month and salaries
   const [month, setMonth] = useState('');
   const [salaries, setSalaries] = useState<SalaryEntry[]>([]);
+  const navigate = useNavigate();
 
   const fetchReports = async (selectedMonth: string) => {
     if (!selectedMonth) return;
@@ -98,6 +101,9 @@ function Reports() {
                     Download
                   </button>
                 </td>
+                <td>
+                    <button className="edit-btn"
+                    onClick={() => navigate('/salary', { state: entry })}>Edit</button></td>
               </tr>
             ))
           )}

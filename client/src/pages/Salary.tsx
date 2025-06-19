@@ -6,6 +6,9 @@ import API from '../services/Api';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
+import { useLocation } from 'react-router-dom';
+
+
 
 
 
@@ -40,6 +43,8 @@ const Salary = () => {
   const [grossPay, setGrossPay] = useState<number>(0);
   const [totalDeductions, setTotalDeductions] = useState<number>(0);
   const [netPay, setNetPay] = useState<number>(0);
+  const location = useLocation();
+  const editData = location.state || null;
 
   // --- Effects ---
 
@@ -56,17 +61,35 @@ useEffect(() => {
 
 
   // Recalculate salary whenever earnings or deductions change
-  useEffect(() => {
-    const totalEarnings = Object.values(earnings).reduce((acc, value) => acc + (parseFloat(value) || 0), 0);
-    const totalDed = Object.values(deductions).reduce((acc, value) => acc + (parseFloat(value) || 0), 0);
+useEffect(() => {
+  
+  const totalEarnings = Object.values(earnings).reduce((acc: number, value) => acc + (parseFloat(value as string) || 0), 0);
+  const totalDed = Object.values(deductions).reduce((acc: number, value) => acc + (parseFloat(value as string) || 0), 0);
 
-    setGrossPay(totalEarnings);
-    setTotalDeductions(totalDed);
-    setNetPay(totalEarnings - totalDed);
-  }, [earnings, deductions]);
+  setGrossPay(Number(totalEarnings));
+  setTotalDeductions(Number(totalDed));
+  setNetPay(Number(totalEarnings) - Number(totalDed));
+}, [earnings, deductions]);
 
+useEffect(() => {
+  if (editData) {
+    setSelectedEmployeeId(editData.empId);
+    setSelectedMonth(editData.month);
+    setEarnings(editData.earnings);
+    setDeductions(editData.deductions);
 
-  // --- Handlers ---
+    const totalEarnings = Object.values(editData.earnings).reduce(
+      (acc: number, value) => acc + (parseFloat(value as string) || 0), 0
+    );
+    const totalDed = Object.values(editData.deductions).reduce(
+      (acc: number, value) => acc + (parseFloat(value as string) || 0), 0
+    );
+
+    setGrossPay(Number(totalEarnings));
+    setTotalDeductions(Number(totalDed));
+    setNetPay(Number(totalEarnings) - Number(totalDed));
+  }
+}, []);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -99,9 +122,14 @@ const handleSave = async () => {
     return;
   }
 
+  const formattedMonth = new Date(selectedMonth).toLocaleString('default', {
+    month: 'long',
+    year: 'numeric',
+  });
+
   const salaryData = {
     employeeId: selectedEmpId, // ✅ fixed
-    month: selectedMonth,
+    month: formattedMonth, // ✅ fixed
     earnings: Object.entries(earnings).reduce((acc, [key, value]) => {
       acc[key] = parseFloat(value) || 0;
       return acc;
