@@ -181,3 +181,12 @@ input:focus, select:focus {
 .net-pay strong {
     color: #000;
 }
+
+.datepicker-input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fff;
+}

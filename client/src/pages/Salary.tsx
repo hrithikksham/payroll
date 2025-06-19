@@ -3,23 +3,12 @@ import type { ChangeEvent } from 'react';
 import toast from 'react-hot-toast';
 import './Salary.css';
 import API from '../services/Api';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 
 
-const generateMonthYears = () => {
-  const options: string[] = [];
-  const currentYear = new Date().getFullYear();
 
-  for (let y = currentYear - 2; y <= currentYear + 3; y++) {
-    for (let m = 0; m < 12; m++) {
-      const date = new Date(y, m);
-      const label = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-      options.push(label); // e.g., June 2025
-    }
-  }
-  return options;
-};
-
-const monthYears = generateMonthYears();
 
 // Define types for our state
 interface IField {
@@ -134,6 +123,14 @@ const handleSave = async () => {
   }
 };
 
+const [calendarDate, setCalendarDate] = useState<Date | null>(null);
+useEffect(() => {
+  // Set initial calendar date to current month
+  const today = new Date();
+  setCalendarDate(new Date(today.getFullYear(), today.getMonth(), 1));
+}
+, []);
+
   return (
     <div className="salary-container">
       <div className="salary-card">
@@ -154,10 +151,17 @@ const handleSave = async () => {
             </div>
             <div className="form-group">
                 <label>Month</label>
-            <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
-            <option value="" disabled>Select month</option>
-            {monthYears.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
+            <DatePicker
+            selected={calendarDate}
+            onChange={(date) => {
+                setCalendarDate(date);
+                const formatted = format(date!, 'MMMM-yyyy'); // e.g. June-2025
+                setSelectedMonth(formatted); 
+                }}
+                dateFormat="MMMM yyyy"
+                showMonthYearPicker
+                showFullMonthYearPicker
+                className="datepicker-input"/>
             </div>
         </div>
 
