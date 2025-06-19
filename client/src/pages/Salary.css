@@ -19,9 +19,9 @@
 }
 
 .title {
-    color: #333;
-    font-size: 28px;
-    font-weight: 500;
+    color: #1a1a1a;
+    font-size: 34px;
+    font-weight: lighter;
     margin-bottom: 30px;
 }
 
@@ -37,7 +37,11 @@
 }
 
 .content-row {
-    justify-content: space-between;
+    justify-content: 2space-between;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
 }
 
 .column {
@@ -71,9 +75,9 @@
 
 input[type="number"],
 select {
-    width: 100%;
+    width: 80%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #929292;
     border-radius: 4px;
     font-size: 15px;
     color: #333;
@@ -93,8 +97,10 @@ input[type="number"] {
 
 
 input:focus, select:focus {
-    outline: none;
+    outline: snow;
     border-color: #007bff;
+    border: blur(2px);
+    
 }
 
 /* Buttons */
@@ -145,7 +151,7 @@ input:focus, select:focus {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    align-items: flex-end; /* Align text to the right */
+    align-items: center; /* Align text to the right */
 }
 
 .total-field {

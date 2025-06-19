@@ -10,7 +10,6 @@ type Employee = {
   name: string;
   designation: string;
   phone: string;
-  baseSalary?: string;
 };
 
 const Employees = () => {
@@ -18,7 +17,6 @@ const Employees = () => {
   const [empId, setEmpId] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [designation, setDesignation] = useState('');
-  const [baseSalary, setBaseSalary] = useState('');
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isFormExpanded, setIsFormExpanded] = useState(true);
 
@@ -38,19 +36,17 @@ const Employees = () => {
   const handleAddEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await API.post('/employees', {
-        name,
-        empId,
-        phone: phoneNo,
-        designation,
-        baseSalary,
-      });
+        await API.post('/employees', {
+            name,
+            empId,
+            phone: phoneNo,
+            designation,
+});
       toast.success('Employee added!');
       setName('');
       setEmpId('');
       setPhoneNo('');
       setDesignation('');
-      setBaseSalary('');
       fetchEmployees();
     } catch (err: any) {
       toast.error(err.response?.data?.msg || 'Add failed');
@@ -84,7 +80,6 @@ return (
               <input placeholder="EMP ID" value={empId} onChange={e => setEmpId(e.target.value)} required />
               <input placeholder="Phone" value={phoneNo} onChange={e => setPhoneNo(e.target.value)} required />
               <input placeholder="Designation" value={designation} onChange={e => setDesignation(e.target.value)} required />
-              <input type="number" placeholder="Base Salary" value={baseSalary} onChange={e => setBaseSalary(e.target.value)} required />
             </div>
             <button type="submit" className="add-button">+ Add</button>
           </form>

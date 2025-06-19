@@ -6,8 +6,6 @@ const generatePayslipStream = require('../utils/generatePayslip');
 exports.calculateSalary = async (req, res) => {
   try {
     const { employeeId, month, earnings, deductions } = req.body;
-
-    // Prevent duplicate entries
     const exists = await Salary.findOne({ employeeId, month });
     if (exists) {
       return res.status(400).json({ msg: 'Salary already exists for this employee and month' });
@@ -18,7 +16,7 @@ exports.calculateSalary = async (req, res) => {
     const net = gross - totalDeductions;
 
     const salary = new Salary({
-      empId,
+      employeeId,
       month,
       earnings,
       deductions,
@@ -29,7 +27,7 @@ exports.calculateSalary = async (req, res) => {
     await salary.save();
     res.status(201).json(salary);
   } catch (err) {
-    console.error(err);
+    console.error('💥 Salary Controller Error:', err.message);
     res.status(500).json({ msg: 'Error calculating salary' });
   }
 };

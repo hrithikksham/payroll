@@ -19,10 +19,6 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  baseSalary: {
-    type: Number,
-    required: true
-  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Employee', employeeSchema);

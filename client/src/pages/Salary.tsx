@@ -28,7 +28,7 @@ interface IField {
 
 const Salary = () => {
   const [employees, setEmployees] = useState<{ _id: string; name: string }[]>([]);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>('');
+  const [selectedEmpId, setSelectedEmployeeId] = useState<string>('');
   const [selectedMonth, setSelectedMonth] = useState<string>('');
 
   const [earnings, setEarnings] = useState<IField>({
@@ -64,19 +64,6 @@ useEffect(() => {
     });
 }, []);
 
- useEffect(() => {
-  if (!selectedEmployeeId) return;
-
-  fetch(`/api/employees/${selectedEmployeeId}`)
-    .then(res => res.json())
-    .then(data => {
-      setEarnings(prev => ({
-        ...prev,
-        'Basic + HRA': data.baseSalary?.toString() || ''
-      }));
-    })
-    .catch(() => toast.error("Failed to load employee base salary"));
-}, [selectedEmployeeId]);
 
 
   // Recalculate salary whenever earnings or deductions change
@@ -116,34 +103,36 @@ useEffect(() => {
     }
   };
 
-  const handleSave = () => {
-    if (!selectedEmployeeId || !selectedMonth) {
-        toast.caller('Please select an employee and a month.');
-        return;
-    }
 
-    // This object matches your Mongoose schema
-    const salaryData = {
-        empId: selectedEmployeeId,
-        month: selectedMonth,
-        earnings: Object.entries(earnings).reduce((acc, [key, value]) => {
-            acc[key] = parseFloat(value) || 0;
-            return acc;
-        }, {} as Record<string, number>),
-        deductions: Object.entries(deductions).reduce((acc, [key, value]) => {
-            acc[key] = parseFloat(value) || 0;
-            return acc;
-        }, {} as Record<string, number>),
-        gross: grossPay,
-        net: netPay,
-    };
+const handleSave = async () => {
+  if (!selectedEmpId || !selectedMonth) {
+    toast.error('Please select an employee and a month.');
+    return;
+  }
 
-    console.log('--- Saving Salary Data ---');
-    console.log(JSON.stringify(salaryData, null, 2));
-
-    alert('Salary data prepared. Check the console for the output.');
+  const salaryData = {
+    employeeId: selectedEmpId, // ✅ fixed
+    month: selectedMonth,
+    earnings: Object.entries(earnings).reduce((acc, [key, value]) => {
+      acc[key] = parseFloat(value) || 0;
+      return acc;
+    }, {} as Record<string, number>),
+    deductions: Object.entries(deductions).reduce((acc, [key, value]) => {
+      acc[key] = parseFloat(value) || 0;
+      return acc;
+    }, {} as Record<string, number>),
+    gross: grossPay,
+    net: netPay,
   };
 
+  try {
+    await API.post('/salary', salaryData); // ✅ token will auto-attach via interceptor
+    toast.success('Salary saved successfully!');
+  } catch (err: any) {
+    console.error('❌ Error:', err);
+    toast.error(err.response?.data?.msg || 'Failed to save salary');
+  }
+};
 
   return (
     <div className="salary-container">
@@ -153,7 +142,7 @@ useEffect(() => {
         <div className="form-row top-row">
             <div className="form-group">
                 <label>Employee</label>
-                <select value={selectedEmployeeId} onChange={(e) => setSelectedEmployeeId(e.target.value)}>
+                <select value={selectedEmpId} onChange={(e) => setSelectedEmployeeId(e.target.value)}>
                     <option value="" disabled>Select employee</option>
                     {employees.map(emp => (
                         <option key={emp._id} value={emp._id}> 
