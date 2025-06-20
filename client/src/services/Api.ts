@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:4848/api',
+  baseURL: 'https://payroll-x3t0.onrender.com/api',
 });
 
 API.interceptors.request.use((config) => {
