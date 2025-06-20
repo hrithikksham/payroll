@@ -7,7 +7,7 @@ const salarySchema = new mongoose.Schema({
     required: true,
   },
   month: {
-    type: String, 
+    type: String,
     required: true,
   },
   earnings: {
@@ -26,6 +26,11 @@ const salarySchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  employeeSnapshot: {
+    empId: { type: String, required: true },
+    name: { type: String, required: true },
+    designation: { type: String, required: true },
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Salary', salarySchema);

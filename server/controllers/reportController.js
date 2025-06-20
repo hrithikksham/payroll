@@ -1,5 +1,10 @@
 const Salary = require('../models/Salary');
 const Employee = require('../models/Employee');
+// In controllers/salaryController.js
+const PDFDocument = require('pdfkit');
+const getStream = require('get-stream');
+
+
 
 // Salaries for a specific month (all employees)
 exports.getMonthlyReport = async (req, res) => {
@@ -57,5 +62,53 @@ exports.getEmployeeReport = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server error in employee report' });
+  }
+};
+
+
+
+exports.downloadMonthlyReportPDF = async (req, res) => {
+  try {
+    const { month } = req.params;
+    const regexPattern = new RegExp(`^${month.replace('-', '[- ]')}$`, 'i');
+    const salaries = await Salary.find({ month: { $regex: regexPattern } });
+
+    if (!salaries.length) {
+      return res.status(404).json({ msg: `No salary records found for ${month}` });
+    }
+
+    const doc = new PDFDocument({ margin: 50 });
+    const filename = `Salary_Report_${month.replace(' ', '_')}.pdf`;
+
+    res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-type', 'application/pdf');
+
+    // Title
+    doc.fontSize(20).text(`Salary Report - ${month}`, { align: 'center' });
+    doc.moveDown();
+
+    // Table Headers
+    doc.fontSize(12);
+    doc.text('EMP ID', 50);
+    doc.text('Name', 120);
+    doc.text('Designation', 250);
+    doc.text('Net Salary', 400);
+    doc.moveDown();
+
+    // Table Rows
+    salaries.forEach(s => {
+      const snap = s.employeeSnapshot || {};
+      doc.text(snap.empId || '-', 50);
+      doc.text(snap.name || '-', 120);
+      doc.text(snap.designation || '-', 250);
+      doc.text(`Rs. ${s.net.toFixed(2)}`, 400);
+      doc.moveDown();
+    });
+
+    doc.end();
+    doc.pipe(res); // ✅ Stream to response
+  } catch (err) {
+    console.error('PDF Report Error:', err.message);
+    res.status(500).json({ msg: 'Failed to generate report PDF' });
   }
 };

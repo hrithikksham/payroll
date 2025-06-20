@@ -6,10 +6,10 @@
 }
 
 .employees-header {
-  font-size: 1.8rem;
-  font-weight: lighter;
-  letter-spacing: 2px;
-  margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    font-size: 34px;
+    font-weight: lighter;
+    margin-bottom: 30px;
 
 }
 
