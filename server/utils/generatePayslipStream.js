@@ -260,23 +260,27 @@ class PayslipGenerator {
       .fillColor('white')
       .fontSize(this.fonts.header)
       .font('Helvetica-Bold')
-      .text('SALARY SUMMARY', this.margin + 10, startY + 6);
+      .text('SALARY SUMMARY', this.margin, startY + 6, {
+        align: 'center',
+        width: this.contentWidth
+      });
 
-    // Summary details
+    // Summary details (centered)
     const summaryY = startY + 30;
-    const leftCol = this.margin + 20;
-    const rightCol = this.margin + (this.contentWidth / 2) + 20;
 
+    // Gross Salary and Total Deductions (centered in one line)
+    const summaryText = `Gross Salary: ₹${salary.gross.toFixed(2)}    |    Total Deductions: ₹${totalDeductions.toFixed(2)}`;
     this.doc
       .fillColor(this.colors.text)
       .fontSize(this.fonts.body)
       .font('Helvetica-Bold')
-      .text('Gross Salary:', leftCol, summaryY)
-      .text(`₹${salary.gross.toFixed(2)}`, leftCol + 100, summaryY)
-      .text('Total Deductions:', rightCol, summaryY)
-      .text(`₹${totalDeductions.toFixed(2)}`, rightCol + 100, summaryY);
+      .text(summaryText, this.margin, summaryY, {
+        align: 'center',
+        width: this.contentWidth
+      });
 
-    // Net salary highlight
+    // Net salary highlight (centered)
+    const netSalaryText = `NET SALARY: ₹${salary.net.toLocaleString()}`;
     this.doc
       .rect(this.margin + 20, summaryY + 20, this.contentWidth - 40, 18)
       .fillAndStroke(this.colors.primary, this.colors.primary);
@@ -285,22 +289,16 @@ class PayslipGenerator {
       .fillColor('white')
       .fontSize(this.fonts.header)
       .font('Helvetica-Bold')
-      .text('NET SALARY:', this.margin + 30, summaryY + 24)
-      .text(`₹${salary.net.toLocaleString()}`, this.margin + 130, summaryY + 24);
+      .text(netSalaryText, this.margin + 20, summaryY + 24, {
+        align: 'center',
+        width: this.contentWidth - 40
+      });
   }
 
   // === FOOTER SECTION ===
   renderFooter() {
     const footerY = this.pageHeight - 120;
     
-    // Footer separator line
-    this.doc
-      .strokeColor(this.colors.border)
-      .lineWidth(1)
-      .moveTo(this.margin, footerY - 10)
-      .lineTo(this.pageWidth - this.margin, footerY - 10)
-      .stroke();
-
     // Signature section
     const signatureWidth = 200;
     const leftSignX = this.margin + 20;
@@ -333,17 +331,6 @@ class PayslipGenerator {
       .fontSize(this.fonts.body)
       .font('Helvetica-Bold')
       .text('Authorized Signature', rightSignX, footerY + 25);
-
-    // Footer note
-    this.doc
-      .fillColor(this.colors.border)
-      .fontSize(this.fonts.small)
-      .font('Helvetica')
-      .text('This is a computer-generated payslip and does not require a signature.', 
-            this.margin, footerY + 50, {
-              align: 'center',
-              width: this.contentWidth
-            });
   }
 
   // === UTILITY METHODS ===

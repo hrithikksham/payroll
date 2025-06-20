@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
-import { TailSpin } from 'react-loader-spinner'; // ⬅️ Spinner component
+import { TailSpin } from 'react-loader-spinner';
 
 interface SalaryEntry {
   _id: string;
@@ -30,83 +30,90 @@ function Reports() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-const tryFormats = async (month: string) => {
-  try {
-    const encoded1 = encodeURIComponent(month); // "June 2025"
-    const res1 = await API.get(`/salary/${encoded1}`);
-    if (res1.data?.length) return res1.data;
-  } catch {}
+  const tryFormats = async (month: string) => {
+    try {
+      const encoded1 = encodeURIComponent(month); // "June 2025"
+      const res1 = await API.get(`/salary/${encoded1}`);
+      if (res1.data?.length) return res1.data;
+    } catch {}
 
-  try {
-    const fallback = month.replace(' ', '-'); // "June-2025"
-    const encoded2 = encodeURIComponent(fallback);
-    const res2 = await API.get(`/salary/${encoded2}`);
-    return res2.data;
-  } catch {}
+    try {
+      const fallback = month.replace(' ', '-'); // "June-2025"
+      const encoded2 = encodeURIComponent(fallback);
+      const res2 = await API.get(`/salary/${encoded2}`);
+      return res2.data;
+    } catch {}
 
-  return [];
-};
+    return [];
+  };
 
-const fetchReports = async (selectedMonth: string) => {
-  if (!selectedMonth) return;
-  setLoading(true);
-  try {
-    const data = await tryFormats(selectedMonth);
-    if (data.length === 0) toast.error('No reports found for this month');
-    setSalaries(data);
-  } catch (err) {
-    toast.error('Error fetching reports');
-  } finally {
-    setLoading(false);
-  }
-};
+  const fetchReports = async (selectedMonth: string) => {
+    if (!selectedMonth) return;
+    setLoading(true);
+    try {
+      const data = await tryFormats(selectedMonth);
+      if (data.length === 0) toast.error('No reports found for this month');
+      setSalaries(data);
+    } catch (err: any) {
+      console.error('Error fetching reports:', err);
+      if (err.response?.status === 401) {
+        toast.error('Session expired. Please login again.');
+        navigate('/login');
+      } else {
+        toast.error('Error fetching reports');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const downloadMonthlyPDF = async () => {
-  if (!month) return toast.error('Select a month first');
-  try {
-    const encodedMonth = encodeURIComponent(month.trim());
-    const res = await API.get(`/salary/report/${encodedMonth}/pdf`, {
-      responseType: 'blob'
-    });
 
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `Salary_Report_${month}.pdf`);
-    document.body.appendChild(link);
-    link.click();
-  } catch (err) {
-    toast.error('Failed to download PDF');
-  }
-};
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this salary record?')) return;
 
-const handleDelete = async (id: string) => {
-  if (!window.confirm('Are you sure you want to delete this salary record?')) return;
+    try {
+      await API.delete(`/salary/${id}`);
+      toast.success('Salary deleted');
+      fetchReports(month); // refresh current view
+    } catch (err: any) {
+      console.error('Delete error:', err);
+      if (err.response?.status === 401) {
+        toast.error('Session expired. Please login again.');
+        navigate('/login');
+      } else {
+        toast.error(err.response?.data?.msg || 'Delete failed');
+      }
+    }
+  };
 
-  try {
-    await API.delete(`/salary/${id}`);
-    toast.success('Salary deleted');
-    fetchReports(month); // refresh current view
-  } catch (err: any) {
-    toast.error(err.response?.data?.msg || 'Delete failed');
-  }
-};
-
-    const downloadPayslip = async (id: string) => {
-        try {
-            const response = await API.get(`/salary/${id}/payslip`, {
-            responseType: 'blob',
-            });
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `Payslip_${id}.pdf`);
-            document.body.appendChild(link);
-            link.click();
-            } catch (err) {
-                toast.error('Download failed');
-  }
-};
+  const downloadPayslip = async (id: string) => {
+    try {
+      const response = await API.get(`/salary/${id}/payslip`, {
+        responseType: 'blob',
+        timeout: 30000,
+      });
+      
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Payslip_${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('Payslip downloaded successfully!');
+    } catch (err: any) {
+      console.error('Payslip download error:', err);
+      if (err.response?.status === 401) {
+        toast.error('Session expired. Please login again.');
+        navigate('/login');
+      } else {
+        toast.error('Download failed');
+      }
+    }
+  };
 
   const handleMonthChange = (date: Date | null) => {
     if (!date) return;
@@ -139,9 +146,7 @@ const handleDelete = async (id: string) => {
           placeholderText="Select month"
         />
       </div>
-
-      <button className="download-btn" onClick={downloadMonthlyPDF}> 📄 Download Monthly Report </button>
-
+      
       <div className="table-wrapper">
         {loading ? (
           <div className="spinner">
@@ -171,15 +176,14 @@ const handleDelete = async (id: string) => {
                   <tr key={entry._id}>
                     <td>{entry.employeeId?.empId || entry.employeeSnapshot?.empId || 'N/A'}</td>
                     <td>{entry.employeeId?.name || entry.employeeSnapshot?.name || 'N/A'}</td>
-                    <td>{entry.employeeId?.designation ||entry.employeeSnapshot?.designation||'N/A'}</td>
-                    <td>{entry.net?.toFixed(2) || '0.00'}</td>
+                    <td>{entry.employeeId?.designation || entry.employeeSnapshot?.designation || 'N/A'}</td>
+                    <td>₹{entry.net?.toFixed(2) || '0.00'}</td>
                     <td>
                       <button
                         className="download-btn"
                         onClick={() => downloadPayslip(entry._id)}
                       >
                         Download
-
                       </button>
                     </td>
                     <td>
@@ -189,7 +193,12 @@ const handleDelete = async (id: string) => {
                       >
                         Edit
                       </button>
-                      <button className="delete-btn" onClick={() => handleDelete(entry._id)}>Delete</button>
+                      <button 
+                        className="delete-btn" 
+                        onClick={() => handleDelete(entry._id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))
