@@ -82,7 +82,6 @@ const Dashboard: React.FC = () => {
   };
 
   const formatCurrency = (amount: number) => `Rs. ${amount.toLocaleString()}`;
-  const getMaxValue = () => Math.max(...data.monthlyData.map(d => d.total || 0), 1);
 
   if (loading) {
     return (

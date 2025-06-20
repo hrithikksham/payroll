@@ -1,18 +1,9 @@
 
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 
-
-
 const ProtectedLayout = () => {
-  const navigate = useNavigate();
   const token = localStorage.getItem('token');
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
   if (!token) return <Navigate to="/login" replace />;
 
   return (
