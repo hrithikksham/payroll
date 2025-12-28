@@ -35,11 +35,6 @@
 
 **Anjo Payroll** is a modern solution designed to streamline HR processes. It separates concerns between a high-performance **React/Vite Frontend** and a scalable **Node/Express Backend**. The system handles everything from employee onboarding to complex salary computations (Earnings vs. Deductions) and PDF payslip generation.
 
-
-
-[Image of MERN stack architecture diagram]
-
-
 ## ✨ Key Features
 
 ### 🎨 Frontend Experience
