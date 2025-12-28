@@ -80,33 +80,34 @@
 * Node.js (v18+)
 * MongoDB Connection URI
 
-### 1️⃣ Backend Setup
+## 1️⃣ Backend Setup
 
-# Navigate to server directory
+### Navigate to server directory
 cd server
 
-# Install dependencies
+### Install dependencies
 npm install
 
-# Start the Development Server (Nodemon)
+### Start the Development Server (Nodemon)
 npm run dev
-# Server runs on Port: 4848
+
+### Server runs on Port: 4848
 
 
 
-### 2️⃣ Frontend Setup
+## 2️⃣ Frontend Setup
 
 
-# Navigate to client directory
+### Navigate to client directory
 cd client
 
-# Install dependencies
+### Install dependencies
 npm install
 
-# Run the development server
+### Run the development server
 npm run dev
 
-# App usually runs on http://localhost:5173
+### App usually runs on http://localhost:5173
 
 
 
@@ -150,35 +151,6 @@ JWT_SECRET
 | --- | --- | --- |
 | `POST` | `/salary/calculate` | Saves earnings, deductions, and net pay. |
 | `GET` | `/salary/:month` | Fetches salary records for reports. |
-
----
-
-## 📂 Folder Structure
-
-A high-level view of the application structure.
-
-
-Anjo-Payroll/
-├── 📂 client/ (Frontend)
-│   ├── 📂 src/
-│   │   ├── 📂 components/   # Reusable UI (Sidebar, Header, Cards)
-│   │   ├── 📂 pages/        # Dashboard, Login, Employees, Reports
-│   │   ├── 📂 services/     # Axios API calls (authService, employeeService)
-│   │   ├── 📂 context/      # AuthContext (Global State)
-│   │   ├── 📂 hooks/        # Custom Hooks
-│   │   ├── App.tsx          # Main Routing
-│   │   └── main.tsx         # Entry Point
-│   ├── tailwind.config.js
-│   └── vite.config.ts
-│
-├── 📂 server/ (Backend)
-│   ├── 📂 models/           # Mongoose Schemas (User, Employee, Salary)
-│   ├── 📂 routes/           # Express Routes
-│   ├── 📂 middleware/       # Auth Middleware
-│   ├── server.js            # Entry Point
-│   └── package.json
-└── README.md
-
 
 
 ## 🔮 Future Improvements
