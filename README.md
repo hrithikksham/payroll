@@ -1,5 +1,3 @@
-
-
 <div align="center">
 
   <h1>💰 Anjo Payroll System</h1>
@@ -17,7 +15,7 @@
   <img src="https://img.shields.io/badge/NODE.JS-20+-339933?style=for-the-badge&logo=node.js&logoColor=white" />
   <img src="https://img.shields.io/badge/EXPRESS-5.1-000000?style=for-the-badge&logo=express&logoColor=white" />
   <img src="https://img.shields.io/badge/MONGODB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
-  <img src="https://img.shields.io/badge/TAILWIND-CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img src="https://img.shields.io/badge/CSS-Plain-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
 </p>
 
 <p>
@@ -43,7 +41,7 @@
 * **👥 Employee Management:** Centralized hub to Add, View, and Edit employee profiles.
 * **💸 Salary Calculator:** Automated gross/net calculation engine with database persistence.
 * **📄 Smart Reporting:** Filter payrolls by month and download professional **PDF Payslips**.
-* **⚡ Modern UI:** Built with **TailwindCSS** for a responsive, clean aesthetic.
+* **⚡ Modern UI:** Built with plain component CSS files for styling (see client/src pages).
 
 ### ⚙️ Backend Power
 * **🛡 Middleware Security:** Custom `authMiddleware.js` to verify transactions.
@@ -59,7 +57,7 @@
 | :--- | :--- |
 | **Vite + React** | Fast build tool and UI library. |
 | **TypeScript** | Strict typing for scalable code. |
-| **Tailwind CSS** | Utility-first styling. |
+| **Plain CSS** | Component-level CSS files are used for styling. |
 | **Axios** | API request handling. |
 | **Recharts / Chart.js** | Data visualization. |
 | **React Router Dom** | Client-side routing. |
@@ -110,7 +108,6 @@ npm run dev
 ### App usually runs on http://localhost:5173
 
 
-
 ## 🔐 Environment Variables
 
 > **⚠️ Security Note:** Never commit your actual `.env` file to GitHub.
@@ -149,8 +146,11 @@ JWT_SECRET
 
 | Method | Endpoint | Description |
 | --- | --- | --- |
-| `POST` | `/salary/calculate` | Saves earnings, deductions, and net pay. |
-| `GET` | `/salary/:month` | Fetches salary records for reports. |
+| `POST` | `/salary` | Create/save salary record (earnings, deductions, gross, net). |
+| `PUT` | `/salary/:id` | Update an existing salary record. |
+| `GET` | `/salary/:month` | Fetch salary records for a particular month (e.g. "June 2025" or "June-2025"). |
+| `GET` | `/salary/:id/payslip` | Download PDF payslip for a salary record. |
+| `DELETE` | `/salary/:id` | Delete a salary record. |
 
 
 ## 🔮 Future Improvements
